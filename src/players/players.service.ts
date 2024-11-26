@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PrismaService } from 'prisma/prisma.service';
-import { tr } from '@faker-js/faker/.';
 
 @Injectable()
 export class PlayersService {

@@ -12,9 +12,19 @@ export class TeamsController {
     return this.teamsService.create(createTeamDto);
   }
 
+  @Post(':id/addPlayer/:playerId')
+  addPlayerToTeam(@Param('id') id: string, @Param('playerId') playerId: string){
+    return this.teamsService.addPlayerToTeam(+id, +playerId);
+  }
+
   @Get()
   findAll() {
     return this.teamsService.findAll();
+  }
+
+  @Get('/players')
+  findAllWithPlayers() {
+    return this.teamsService.findAllWithPlayers();
   }
 
   @Get(':id')
