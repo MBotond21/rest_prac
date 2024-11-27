@@ -60,6 +60,19 @@ export class TeamsService {
     }catch { return undefined }
   }
 
+  async removePlayerFromTeam(teamId: number, playerId: number){
+    try{
+      return await this.db.team.update({
+        where: { id: teamId },
+        data: {
+          players: {
+            disconnect: [{ id: playerId }]
+          }
+        }
+      })
+    }catch { return undefined }
+  }
+
   async remove(id: number) {
     try{
       return await this.db.team.delete({

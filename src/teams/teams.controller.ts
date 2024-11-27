@@ -19,6 +19,13 @@ export class TeamsController {
     return team;
   }
 
+  @Post(':id/removePlayer/:playerId')
+  async removePlayerFromTeam(@Param('id') id: string, @Param('playerId') playerId: string){
+    const team = await this.teamsService.removePlayerFromTeam(+id, +playerId);
+    if (!team) throw new NotFoundException(`Team ID (${id}) or Player ID (${playerId}) is wrong`);
+    return team;
+  }
+
   @Get()
   findAll() {
     return this.teamsService.findAll();
