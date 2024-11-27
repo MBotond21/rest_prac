@@ -25,8 +25,8 @@ export class PlayersService {
     });
   }
 
-  findOne(id: number) {
-    return this.db.player.findUnique({
+  async findOne(id: number) {
+    return await this.db.player.findUnique({
       where: {
         id: id
       },
@@ -36,16 +36,22 @@ export class PlayersService {
     });
   }
 
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return this.db.player.update({
-      where: { id: id },
-      data: updatePlayerDto
-    });
+  async update(id: number, updatePlayerDto: UpdatePlayerDto) {
+    try{
+      return await this.db.player.update({
+        where: { id: id },
+        data: updatePlayerDto
+      });
+    }catch{ return undefined }
   }
 
-  remove(id: number) {
-    return this.db.player.delete({
-      where: { id: id }
-    });
+  async remove(id: number) {
+    try{
+      return await this.db.player.delete({
+        where: { id }
+      })
+    }catch {
+      return undefined
+    }
   }
 }

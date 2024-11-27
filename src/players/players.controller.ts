@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, HttpCode } from '@nestjs/common';
 import { PlayersService } from './players.service';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
@@ -18,17 +18,25 @@ export class PlayersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.playersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const player = await this.playersService.findOne(+id);
+    if (!player) throw new NotFoundException('No player with ID ' + id);
+    return player;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
-    return this.playersService.update(+id, updatePlayerDto);
+  async update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
+    const player = await this.playersService.update(+id, updatePlayerDto);
+    if (!player) throw new NotFoundException('No player with ID ' + id);
+    return player;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.playersService.remove(+id);
+  @HttpCode(204)
+  async remove(@Param('id') id: string) {
+    const success = await this.playersService.remove(+id);
+    if (!success) {
+      throw new NotFoundException('No player with ID ' + id);
+    }
   }
 }
